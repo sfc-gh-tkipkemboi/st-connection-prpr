@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+psycopg2-binary = "*"
+snowflake-snowpark-python = "*"
+snowflake-connector-python = "*"
+toml = "*"
+watchdog = "*"
+pyarrow = {version = "==8.0.0", extras = ["pandas"]}
+sqlalchemy = "==1.4"
+streamlit = {path = "./streamlit-1.17.0-py2.py3-none-any.whl"}
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
