@@ -5,8 +5,6 @@ name = "pypi"
 
 [packages]
 psycopg2-binary = "*"
-snowflake-snowpark-python = "*"
-snowflake-connector-python = "*"
 toml = "*"
 watchdog = "*"
 pyarrow = {version = "==8.0.0", extras = ["pandas"]}
