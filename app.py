@@ -7,22 +7,42 @@ st.set_page_config(
 
 st.title("🔌 st.connection PrPr")
 
-"A simple landing page and demo app for st.connection"
+"""
+A simple landing page and demo app for st.connection.
+This app is running on [this commit](https://github.com/streamlit/streamlit/tree/e3737e3bd1372e7cd288b4529ec72eaf1089b966).
 
-st.markdown("This app is running on [this commit](https://github.com/streamlit/streamlit/tree/e3737e3bd1372e7cd288b4529ec72eaf1089b966).")
+Check out the .whl file [here **TODO: NEED TO ADD**]().
+Put your feedback [here (internal)](https://www.notion.so/streamlit/RC-a6e0c8fbc1234a41938ef2908fef481d#55f6d5cc690d46908bfeb3505580af2a)
+or [here (public) **TODO: NEED TO ADD**]().")
+"""
+with st.expander("Quickstart / Install instructions - SQL"):
+    st.subheader("Dependencies")
+    """
+    To run the st.connection PrPr you need the following installed:
+    * **The custom whl file (linked above)**
+    * **SQLAlchemy** `pip install SQLAlchemy` - recommend version 1.4 or 2.0
+    * **[DBAPI Driver](https://docs.sqlalchemy.org/en/20/dialects/index.html) for your database engine** - e.g. `psycopg2` for Postgres, `mysqlclient` for MySQL, etc. SQLite is already installed.
+    """
 
-st.markdown("Check out the .whl file [here](). **TODO: NEED TO ADD**")
+    st.subheader("Configuration and secrets")
+    """
+    You also need to add a `[connections.sql]` section in your `.streamlit/secrets.toml` and fill in the configuration, like the usage example below. [More info on Streamlit secrets.toml here](https://docs.streamlit.io/streamlit-community-cloud/get-started/deploy-an-app/connect-to-data-sources/secrets-management).
 
-with st.expander("Sample usage"):
-    "secrets.toml looks like this:"
-    code = """
+    Here's a minimal example:
+    """
+    connection_secrets = """
+# .streamlit/secrets.toml
 [connections.sql]
 url = "sqlite:///mydb.db"
     """
-    st.code(code, language='toml')
+    st.code(connection_secrets, language='toml')
+
+with st.expander("Sample usage"):
+    "secrets.toml looks like this:"
+    st.code(connection_secrets, language='toml')
 
     "Here's the example code:"
-    
+
     with st.echo():
         conn = st.connection('sql')
 
@@ -30,15 +50,19 @@ url = "sqlite:///mydb.db"
 
 
     with st.echo():
-        # Grab a SQLAlchemy engine and insert some data in a transaction
-        c = conn.instance.connect()
-        c.execute('CREATE TABLE IF NOT EXISTS pet_owners (person TEXT, pet TEXT);')
-        c.execute('DELETE FROM pet_owners;')
-        pet_owners = {'jerry': 'fish', 'barbara': 'cat', 'alex': 'puppy'}
-        for k in pet_owners:
-            c.execute('INSERT INTO pet_owners (person, pet) VALUES (:owner, :pet);', owner=k, pet=pet_owners[k])
+        # `instance` provides the underlying object - in this case a SQLAlchemy Engine
+        st.markdown(f"`conn.instance` is a `{type(conn.instance)}`")
+    
+    with st.echo():
+        # Grab a SQLAlchemy Connection and insert some data
+        with conn.instance.connect() as c:
+            st.markdown(f"Note that `c` is a `{type(c)}`")
+            c.execute('CREATE TABLE IF NOT EXISTS pet_owners (person TEXT, pet TEXT);')
+            c.execute('DELETE FROM pet_owners;')
+            pet_owners = {'jerry': 'fish', 'barbara': 'cat', 'alex': 'puppy'}
+            for k in pet_owners:
+                c.execute('INSERT INTO pet_owners (person, pet) VALUES (:owner, :pet);', owner=k, pet=pet_owners[k])
                 
-
     with st.echo():
         # Let's see how it worked!
         df = conn.read_sql('select * from pet_owners', ttl_minutes=1)
