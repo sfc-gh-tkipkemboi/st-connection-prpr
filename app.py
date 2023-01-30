@@ -22,6 +22,8 @@ with st.expander("Quickstart / Install instructions - SQL"):
     * **The custom whl file (linked above)**
     * **SQLAlchemy** `pip install SQLAlchemy` - recommend version 1.4 or 2.0
     * **[DBAPI Driver](https://docs.sqlalchemy.org/en/20/dialects/index.html) for your database engine** - e.g. `psycopg2` for Postgres, `mysqlclient` for MySQL, etc. SQLite is already installed.
+
+    We plan to add features in the future that will make it easier to manage these extra installs.
     """
 
     st.subheader("Configuration and secrets")
