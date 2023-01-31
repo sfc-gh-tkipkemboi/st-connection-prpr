@@ -227,12 +227,12 @@ Implementing `connect()` is the key function for any connection class. This is c
 whenever a new connection object is needed.
 
 ```python
-    def disconnect(self) -> None:
-        self.instance.close()
-        self._closed = True
+def disconnect(self) -> None:
+    self.instance.close()
+    self._closed = True
 
-    def is_connected(self) -> bool:
-        return not self._closed
+def is_connected(self) -> bool:
+    return not self._closed
 ```
 
 `disconnect()` and `is_connected()` are used by Streamlit lifecycle to keep your connection healthy and active.
