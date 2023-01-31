@@ -11,7 +11,8 @@ st.title('🔌 st.connection PrPr - Build your own')
 st.connection makes it easy to build, use and share your own connection implementations.
 
 To demonstrate this, this app has a simple [DuckDB](https://duckdb.org/) Connection built in.
-You can view the connection source code [here]().
+You can view the connection source code
+[here](https://github.com/sfc-gh-jcarroll/st-connection-prpr/blob/main/duckdb_connection/connection.py).
 """
 
 with st.echo():
