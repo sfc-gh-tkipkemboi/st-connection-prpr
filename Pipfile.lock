@@ -169,7 +169,6 @@
                 "sha256:f9d0c5c045a3ca9bedfc35dca8526798eb91a07aa7a2c0fee134c6c6f321cbd7",
                 "sha256:ff6f3db31555657f3163b15a6b7c6938d08df7adbfc9dd13d9d19edad678f1e8"
             ],
-            "markers": "python_full_version >= '3.6.0'",
             "version": "==3.0.1"
         },
         "click": {
@@ -328,7 +327,7 @@
                 "sha256:f82d4d717d8ef19188687aa32b8363e96062911e63ba22a0cff7802a8e58e5f1",
                 "sha256:fc3a569657468b6f3fb60587e48356fe512c1754ca05a564f11366ac9e306526"
             ],
-            "markers": "python_version >= '3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
             "version": "==2.0.2"
         },
         "idna": {
@@ -915,7 +914,7 @@
         },
         "streamlit": {
             "hashes": [
-                "sha256:90d1e51eb1952d73a2a3fec45819801017c3c8560f42d30ccb331177a4099f63"
+                "sha256:0e96fa9ea77d5177686728c13f72fcceaca3313182fb6f6adcc584644870150f"
             ],
             "path": "./streamlit-1.17.0-py2.py3-none-any.whl",
             "version": "==1.17.0"

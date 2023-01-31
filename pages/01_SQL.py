@@ -50,17 +50,21 @@ with st.echo():
     st.markdown(f"`conn.instance` is a `{type(conn.instance)}`")
 
 with st.echo():
-    # Grab a SQLAlchemy Connection and insert some data
-    with conn.instance.connect() as c:
-        st.markdown(f"Note that `c` is a `{type(c)}`")
-        c.execute('CREATE TABLE IF NOT EXISTS pet_owners (person TEXT, pet TEXT);')
-        c.execute('DELETE FROM pet_owners;')
+    # Grab a SQLAlchemy Session and insert some data
+    with conn.session() as s:
+        st.markdown(f"Note that `c` is a `{type(s)}`")
+        s.execute('CREATE TABLE IF NOT EXISTS pet_owners (person TEXT, pet TEXT);')
+        s.execute('DELETE FROM pet_owners;')
         pet_owners = {'jerry': 'fish', 'barbara': 'cat', 'alex': 'puppy'}
         for k in pet_owners:
-            c.execute('INSERT INTO pet_owners (person, pet) VALUES (:owner, :pet);', owner=k, pet=pet_owners[k])
+            s.execute(
+                'INSERT INTO pet_owners (person, pet) VALUES (:owner, :pet);',
+                params=dict(owner=k, pet=pet_owners[k])
+            )
+        s.commit()
             
 st.subheader("`read_sql()` convenience method")
 with st.echo():
     # Let's see how it worked!
-    df = conn.read_sql('select * from pet_owners', ttl_minutes=1)
+    df = conn.read_sql('select * from pet_owners', ttl=60)
     st.dataframe(df)
