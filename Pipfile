@@ -10,6 +10,7 @@ watchdog = "*"
 pyarrow = {version = "==8.0.0", extras = ["pandas"]}
 sqlalchemy = "==1.4"
 streamlit = {path = "./streamlit-1.17.0-py2.py3-none-any.whl"}
+duckdb = "*"
 
 [dev-packages]
 
