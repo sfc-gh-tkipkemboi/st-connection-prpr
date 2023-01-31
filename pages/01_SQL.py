@@ -9,29 +9,15 @@ st.set_page_config(
 
 st.title('🔌 st.connection PrPr - SQL')
 
-with st.expander("Quickstart / Install instructions - SQL"):
-    st.subheader("Dependencies")
-    """
-    To run the st.connection PrPr you need the following installed:
-    * **The custom whl file (linked above)**
-    * **SQLAlchemy** `pip install SQLAlchemy` - recommend version 1.4 or 2.0
-    * **[DBAPI Driver](https://docs.sqlalchemy.org/en/20/dialects/index.html) for your database engine** - e.g. `psycopg2` for Postgres, `mysqlclient` for MySQL, etc. SQLite is already installed.
+st.markdown("""
+See the <a href='/Detailed_Docs#sql-connection' target='_self'>Detailed Docs</a> for quickstart, install instructions and the full API reference.
+""", unsafe_allow_html=True)
 
-    We plan to add features in the future that will make it easier to manage these extra installs.
-    """
-
-    st.subheader("Configuration and secrets")
-    """
-    You also need to add a `[connections.sql]` section in your `.streamlit/secrets.toml` and fill in the configuration, like the usage example below. [More info on Streamlit secrets.toml here](https://docs.streamlit.io/streamlit-community-cloud/get-started/deploy-an-app/connect-to-data-sources/secrets-management).
-
-    Here's a minimal example:
-    """
-    connection_secrets = """
+connection_secrets = """
 # .streamlit/secrets.toml
 [connections.sql]
 url = "sqlite:///mydb.db"
-    """
-    st.code(connection_secrets, language='toml')
+"""
 
 st.subheader("Init")
 
@@ -70,3 +56,4 @@ with st.echo():
     # Let's see how it worked!
     df = conn.read_sql('select * from pet_owners', ttl=timedelta(minutes=10))
     st.dataframe(df)
+
