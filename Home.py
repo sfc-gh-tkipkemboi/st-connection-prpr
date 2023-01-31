@@ -5,7 +5,7 @@ st.set_page_config(
     page_icon='🔌'
 )
 
-st.title("🔌 st.connection PrPr")
+st.title("🔌 st.connection PrPr [WIP]")
 
 """
 **Landing page and demo for the st.connection Private Preview.**
