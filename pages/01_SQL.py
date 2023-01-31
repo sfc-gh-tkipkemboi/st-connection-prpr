@@ -1,5 +1,7 @@
 import streamlit as st
 
+from datetime import timedelta
+
 st.set_page_config(
     page_title='st.connection PrPr - SQL',
     page_icon='🔌'
@@ -66,5 +68,5 @@ with st.echo():
 st.subheader("`read_sql()` convenience method")
 with st.echo():
     # Let's see how it worked!
-    df = conn.read_sql('select * from pet_owners', ttl=60)
+    df = conn.read_sql('select * from pet_owners', ttl=timedelta(minutes=10))
     st.dataframe(df)
