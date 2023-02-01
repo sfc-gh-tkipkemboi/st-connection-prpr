@@ -40,7 +40,7 @@ with st.echo():
 with st.echo():
     # Grab a SQLAlchemy Session and insert some data
     with conn.session() as s:
-        st.markdown(f"Note that `c` is a `{type(s)}`")
+        st.markdown(f"Note that `s` is a `{type(s)}`")
         s.execute('CREATE TABLE IF NOT EXISTS pet_owners (person TEXT, pet TEXT);')
         s.execute('DELETE FROM pet_owners;')
         pet_owners = {'jerry': 'fish', 'barbara': 'cat', 'alex': 'puppy'}
