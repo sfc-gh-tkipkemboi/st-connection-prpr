@@ -31,14 +31,14 @@ with st.echo():
 "secrets.toml looks like this:"
 st.code(connection_secrets, language='toml')
 
-st.subheader("Use the raw instance")
+st.subheader("Use session() for writes and transactions")
+
+"""
+`conn.session()` returns an underlying SQLAlchemy Session that can be used for writes,
+transactions, using the SQLAlchemy ORM and other more advanced operations.
+"""
 
 with st.echo():
-    # `instance` provides the underlying object - in this case a SQLAlchemy Engine
-    st.markdown(f"`conn.instance` is a `{type(conn.instance)}`")
-
-with st.echo():
-    # Grab a SQLAlchemy Session and insert some data
     with conn.session() as s:
         st.markdown(f"Note that `s` is a `{type(s)}`")
         s.execute('CREATE TABLE IF NOT EXISTS pet_owners (person TEXT, pet TEXT);')
@@ -51,9 +51,15 @@ with st.echo():
             )
         s.commit()
             
-st.subheader("`read_sql()` convenience method")
+st.subheader("`read_sql()` for common cases")
+
+"""
+For a typical use case where you just need to query and cache some data, it's much simpler.
+Just use `conn.read_sql()`. By default it caches the result without expiration, or you can
+add a TTL. This also support parameters, pagination, date conversions, etc (see the full docs).
+"""
+
 with st.echo():
-    # Let's see how it worked!
     df = conn.read_sql('select * from pet_owners', ttl=timedelta(minutes=10))
     st.dataframe(df)
 
