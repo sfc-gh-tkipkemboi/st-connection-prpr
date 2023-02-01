@@ -51,12 +51,13 @@ with st.echo():
             )
         s.commit()
             
-st.subheader("`read_sql()` for common cases")
+st.subheader("read_sql() for common cases")
 
 """
 For a typical use case where you just need to query and cache some data, it's much simpler.
-Just use `conn.read_sql()`. By default it caches the result without expiration, or you can
-add a TTL. This also support parameters, pagination, date conversions, etc (see the full docs).
+Just use `conn.read_sql()` and get a dataframe back. By default it caches the result without
+expiration, or you can add a TTL. This also support parameters, pagination, date conversions,
+etc (see the full docs).
 """
 
 with st.echo():
