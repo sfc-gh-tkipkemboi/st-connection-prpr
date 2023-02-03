@@ -4,12 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-psycopg2-binary = "*"
 toml = "*"
 watchdog = "*"
 pyarrow = {version = "==8.0.0", extras = ["pandas"]}
 sqlalchemy = "==1.4"
 duckdb = "*"
+fsspec = "*"
+s3fs = "*"
+gcsfs = "*"
+snowflake-snowpark-python = {extras = ["pandas"], version = "*"}
 streamlit = {path = "./streamlit-1.17.0-py2.py3-none-any.whl"}
 
 [dev-packages]

@@ -1,3 +1,4 @@
 .streamlit/secrets.toml
 cli/.streamlit/secrets.toml
 *.db
+/test*
