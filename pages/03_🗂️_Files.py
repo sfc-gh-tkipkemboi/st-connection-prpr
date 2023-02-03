@@ -61,7 +61,6 @@ with s3:
         """
 # In secrets.toml
 [connections.s3]
-protocol = "s3"
 key = "..."
 secret = "..."
     """,
@@ -154,7 +153,6 @@ with gcs:
         """
 # In secrets.toml
 [connections.gcs]
-protocol = "gcs"
 type = "..."
 project_id = "..."
 private_key_id = "..."
@@ -207,7 +205,8 @@ with gcs_other:
 
     connection_details = dict(st.secrets["connections"]["gcs"])
 
-    del connection_details["protocol"]
+    if "protocol" in connection_details:
+        del connection_details["protocol"]
 
     with NamedTemporaryFile("w+", suffix=".json") as f:
         import json

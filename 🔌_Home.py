@@ -5,13 +5,13 @@ st.set_page_config(
     page_icon='🔌'
 )
 
-st.title("🔌 st.connection PrPr [WIP]")
+st.title("🔌 st.connection Private Preview")
 
 """
 **Landing page and demo for the st.connection Private Preview.**
 
 * The full PR is [here](https://github.com/streamlit/streamlit/pull/6035).
-* Install the latest .whl file from [here](https://core-previews.s3-us-west-2.amazonaws.com/pr-6035/streamlit-1.17.0-py2.py3-none-any.whl).
+* 👉 **Try it out yourself** with the latest .whl file from [here](https://core-previews.s3-us-west-2.amazonaws.com/pr-6035/streamlit-1.17.0-py2.py3-none-any.whl).
 """
 
 st.code("""
