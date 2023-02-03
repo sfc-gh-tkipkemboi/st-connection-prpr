@@ -30,12 +30,19 @@ st.subheader("Table of Contents")
 """
 - [st.connection() function](#st-connection-function)
 - [Built-in SQL Connection](#built-in-sql-connection)
-  - [Configuration parameters](#configuration-parameters)
+  - [Configuration parameters](#configuration-parameters-sql)
   - [st.connection() arguments](#st-connection-arguments)
-  - [read_sql()](#read-sql)
-  - [session()](#session)
+  - [read_sql()](#read-sql-sql)
+  - [session()](#session-sql)
 - [Built-in Files Connection](#built-in-files-connection)
+  - [Configuration parameters](#configuration-parameters-sql)
+  - [open()](#open)
+  - [read_*()](#read)
+  - [conn.instance](#conn-instance)
 - [Built-in Snowpark Connection](#built-in-snowpark-connection)
+  - [Configuration parameters](#configuration-parameters-snowpark)
+  - [session()](#session-snowpark)
+  - [read_sql()](#read-sql-snowpark)
 - [BaseConnection and building your own](#baseconnection-and-building-your-own)
 
 """
@@ -116,7 +123,7 @@ st.dataframe(df)
 )
 
 """
-#### Configuration parameters
+#### Configuration parameters (SQL)
 
 You can include the following in your `secrets.toml` under `[connections.<connection name>]`
 
@@ -135,7 +142,7 @@ SQL also supports:
 * `**kwargs` - Any additional keyword arguments which are passed directly to
 [sqlalchemy.create_engine()](https://docs.sqlalchemy.org/en/14/core/engines.html#sqlalchemy.create_engine).
 
-### read_sql()
+### read_sql() (SQL)
 
 `conn.read_sql()` is the most common function to use, for an app that simply needs to query some data
 from the database and then perform further operations on it.
@@ -156,7 +163,7 @@ df = conn.read_sql('select * from pet_owners', ttl=timedelta(minutes=10))
 st.dataframe(df)
 ```
 
-#### session()
+#### session() (SQL)
 
 Call `conn.session()` to get the underlying
 [SQLAlchemy Session](https://docs.sqlalchemy.org/en/14/orm/session_api.html#sqlalchemy.orm.Session).
@@ -196,7 +203,7 @@ st.dataframe(df)
 )
 
 """
-#### Configuration parameters
+#### Configuration parameters (Files)
 
 You can include the following in your `secrets.toml` under `[connections.<connection name>]`:
 
@@ -215,6 +222,11 @@ The connection object will detect and configure using these if available.
 
 Open a file at the provided path. Accepts all the usual arguments.
 
+```python
+with conn.open("my-bucket/pet-log.txt", "wt") as f:
+    f.write("Barbara owns a cat.")
+```
+
 #### read_*()
 
 FileSystem connection also supports the following methods:
@@ -225,17 +237,66 @@ FileSystem connection also supports the following methods:
 
 Each of these will open and read a file at the provided path, optionally cache the results (using `ttl=`), and return it in the specified format.
 
+```python
+df = conn.read_csv("my-bucket/pet_owners.csv")
+st.dataframe(df)
+```
+
 #### conn.instance
 
 `conn.instance` returns an [fsspec.spec.AbstractFileSystem](https://filesystem-spec.readthedocs.io/en/latest/api.html#fsspec.spec.AbstractFileSystem)
 for a fuller set of file operations.
 
+```python
+pet_logs = conn.instance.ls("my-pets-bucket/")
+st.write(pet_logs)
+```
+
 """
 
 st.subheader('Built-in Snowpark Connection')
 
+st.markdown("""
+See the <a href='/Snowpark' target='_self'>Snowpark page</a> for full usage examples.
+
+The Snowpark connection (`streamlit.connections.Snowpark`) is built on [snowpark-python](https://docs.snowflake.com/en/developer-guide/snowpark/python/index.html).
+To use it, you will need to install snowpark-python and have access to a Snowflake account.
+""", unsafe_allow_html=True)
+
 """
-*Full docs coming soon!*
+#### Configuration parameters (Snowpark)
+
+Configuration can be provided in `secrets.toml` under `[connections.snowpark]` (or your custom connection name). The connection will also check
+for credentials in `~/.snowsql/config` (as [here](https://docs.snowflake.com/en/user-guide/snowsql-start.html#configuring-default-connection-settings))
+if none is found in `secrets.toml`. It supports
+[all the normal Snowflake connection parameters](https://docs.snowflake.com/en/user-guide/python-connector-api.html#label-snowflake-connector-methods).
+
+**Not yet supported, but coming soon:**
+- Support for configuration from ENV
+- Detection of running in Streamlit-in-Snowflake (where available) and automatic configuration
+
+#### session() (Snowpark)
+
+Most common for an in-depth use case, use `conn.session()` to retrieve the Snowpark Session and get access to the full Snowpark DataFrame API.
+
+```python
+with conn.session() as session:
+    pets_df = session.table('pet_owners')
+    pets_df = pets_df.filter(col('PET_COUNT') > 1)
+
+st.dataframe(pets_df)
+```
+
+#### read_sql() (Snowpark)
+
+For quick usage or if all computation will be specified in SQL, you can use the convenience `read_sql()` method. It returns a pandas DataFrame
+which by default is cached by Streamlit.
+
+```python
+df = conn.read_sql('select * from pet_owners', ttl=timedelta(minutes=10))
+st.dataframe(df)
+```
+
 """
 
 st.header('`BaseConnection` and building your own')

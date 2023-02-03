@@ -30,26 +30,45 @@ with local:
     st.write("## Working with local files")
     with st.echo():
         conn = st.connection('files')
-        text_file = "test.txt"
-        csv_file = "test.csv"
-        parquet_file = "test.parquet"
 
-        st.write("## Text files")
-        with conn.open(text_file, "wt") as f:
-            f.write("This is a test")
+    with st.expander("Setup code"):
+        with st.echo():
+            text_file = "test-files/test.txt"
+            csv_file = "test-files/test.csv"
+            parquet_file = "test-files/test.parquet"
+            try:
+                _ = conn.instance.ls("./test-files/")
+            except FileNotFoundError:
+                conn.instance.mkdir("./test-files/")
+            try:
+                _ = conn.read_text(text_file)
+            except FileNotFoundError:
+                with conn.open(text_file, "wt") as f:
+                    f.write("This is a test")
+            
+            try:
+                _ = conn.read_csv(csv_file)
+            except FileNotFoundError:
+                with conn.open(csv_file, "wt") as f:
+                    df.to_csv(f, index=False)
+            
+            try:
+                _ = conn.read_parquet(parquet_file)
+            except FileNotFoundError:
+                with conn.open(parquet_file, "wb") as f:
+                    df.to_parquet(f)
 
+    st.write("#### Text files")
+
+    with st.echo():
         st.write(conn.read_text(text_file))
 
-        st.write("## CSV Files")
-        with conn.open(csv_file, "wt") as f:
-            df.to_csv(f, index=False)
-
+    st.write("#### CSV Files")
+    with st.echo():
         st.write(conn.read_csv(csv_file))
 
-        st.write("## Parquet files")
-        with conn.open(parquet_file, "wb") as f:
-            df.to_parquet(f)
-
+    st.write("#### Parquet Files")
+    with st.echo():
         st.write(conn.read_parquet(parquet_file))
 
 
@@ -70,34 +89,45 @@ secret = "..."
     with st.echo():
         conn = st.connection('s3')
 
-        text_file = "st-connection-test/test.txt"
-        csv_file = "st-connection-test/test.csv"
-        parquet_file = "st-connection-test/test.parquet"
+    with st.expander("Setup code"):
+        with st.echo():
+            text_file = "st-connection-test/test.txt"
+            csv_file = "st-connection-test/test.csv"
+            parquet_file = "st-connection-test/test.parquet"
+            try:
+                _ = conn.read_text(text_file)
+            except FileNotFoundError:
+                with conn.open(text_file, "wt") as f:
+                    f.write("This is a test")
+            
+            try:
+                _ = conn.read_csv(csv_file)
+            except FileNotFoundError:
+                with conn.open(csv_file, "wt") as f:
+                    df.to_csv(f, index=False)
+            
+            try:
+                _ = conn.read_parquet(parquet_file)
+            except FileNotFoundError:
+                with conn.open(parquet_file, "wb") as f:
+                    df.to_parquet(f)
 
-        st.write("## Text files")
+    st.write("#### Text files")
 
-        try:
-            st.write(conn.read_text(text_file))
-        except FileNotFoundError:
-            with conn.open(text_file, "wt") as f:
-                f.write("This is a test")
-            st.write(conn.read_text(text_file))
+    with st.echo():
+        st.write(conn.read_text(text_file))
 
-        st.write("## CSV Files")
-        try:
-            st.write(conn.read_csv(csv_file))
-        except FileNotFoundError:
-            with conn.open(csv_file, "wt") as f:
-                df.to_csv(f, index=False)
-            st.write(conn.read_csv(csv_file))
+    st.write("#### CSV Files")
+    with st.echo():
+        st.write(conn.read_csv(csv_file))
 
-        st.write("## Parquet Files")
-        try:
-            st.write(conn.read_parquet(parquet_file))
-        except FileNotFoundError:
-            with conn.open(parquet_file, "wb") as f:
-                df.to_parquet(f)
-            st.write(conn.read_parquet(parquet_file))
+    st.write("#### Parquet Files")
+    with st.echo():
+        st.write(conn.read_parquet(parquet_file))
+    
+    st.write("#### List operations")
+    with st.echo():
+        st.write(conn.instance.ls("st-connection-test/"))
 
 with s3_other:
     st.write("## Working with S3 files")
@@ -116,33 +146,44 @@ with s3_other:
     with st.echo():
         conn = st.connection('s3', name="s3-other")
 
-        text_file = "st-connection-test/test2.txt"
-        csv_file = "st-connection-test/test2.csv"
-        parquet_file = "st-connection-test/test2.parquet"
+    with st.expander("Setup code"):
+        with st.echo():
+            text_file = "st-connection-test/test2.txt"
+            csv_file = "st-connection-test/test2.csv"
+            parquet_file = "st-connection-test/test2.parquet"
+            try:
+                _ = conn.read_text(text_file)
+            except FileNotFoundError:
+                with conn.open(text_file, "wt") as f:
+                    f.write("This is a test")
+            
+            try:
+                _ = conn.read_csv(csv_file)
+            except FileNotFoundError:
+                with conn.open(csv_file, "wt") as f:
+                    df.to_csv(f, index=False)
+            
+            try:
+                _ = conn.read_parquet(parquet_file)
+            except FileNotFoundError:
+                with conn.open(parquet_file, "wb") as f:
+                    df.to_parquet(f)
 
-        st.write("## Text files")
-        try:
-            st.write(conn.read_text(text_file))
-        except FileNotFoundError:
-            with conn.open(text_file, "wt") as f:
-                f.write("This is a test")
-            st.write(conn.read_text(text_file))
+    st.write("#### Text files")
+    with st.echo():
+        st.write(conn.read_text(text_file))
 
-        st.write("## CSV Files")
-        try:
-            st.write(conn.read_csv(csv_file))
-        except FileNotFoundError:
-            with conn.open(csv_file, "wt") as f:
-                df.to_csv(f, index=False)
-            st.write(conn.read_csv(csv_file))
+    st.write("#### CSV Files")
+    with st.echo():
+        st.write(conn.read_csv(csv_file))
 
-        st.write("## Parquet Files")
-        try:
-            st.write(conn.read_parquet(parquet_file))
-        except FileNotFoundError:
-            with conn.open(parquet_file, "wb") as f:
-                df.to_parquet(f)
-            st.write(conn.read_parquet(parquet_file))
+    st.write("#### Parquet Files")
+    with st.echo():
+        st.write(conn.read_parquet(parquet_file))
+    
+    st.write("#### List operations")
+    with st.echo():
+        st.write(conn.instance.ls("st-connection-test/"))
 
 
 with gcs:
@@ -170,34 +211,45 @@ client_x509_cert_url = "..."
     with st.echo():
         conn = st.connection('gcs')
 
-        text_file = "st-connection-test/test.txt"
-        csv_file = "st-connection-test/test.csv"
-        parquet_file = "st-connection-test/test.parquet"
+    with st.expander("Setup code"):
+        with st.echo():
+            text_file = "st-connection-test/test3.txt"
+            csv_file = "st-connection-test/test3.csv"
+            parquet_file = "st-connection-test/test3.parquet"
+            try:
+                _ = conn.read_text(text_file)
+            except FileNotFoundError:
+                with conn.open(text_file, "wt") as f:
+                    f.write("This is a test")
+            
+            try:
+                _ = conn.read_csv(csv_file)
+            except FileNotFoundError:
+                with conn.open(csv_file, "wt") as f:
+                    df.to_csv(f, index=False)
+            
+            try:
+                _ = conn.read_parquet(parquet_file)
+            except FileNotFoundError:
+                with conn.open(parquet_file, "wb") as f:
+                    df.to_parquet(f)
 
-        st.write("## Text files")
+    st.write("#### Text files")
 
-        try:
-            st.write(conn.read_text(text_file))
-        except FileNotFoundError:
-            with conn.open(text_file, "wt") as f:
-                f.write("This is a test")
-            st.write(conn.read_text(text_file))
+    with st.echo():
+        st.write(conn.read_text(text_file))
 
-        st.write("## CSV Files")
-        try:
-            st.write(conn.read_csv(csv_file))
-        except FileNotFoundError:
-            with conn.open(csv_file, "wt") as f:
-                df.to_csv(f, index=False)
-            st.write(conn.read_csv(csv_file))
+    st.write("#### CSV Files")
+    with st.echo():
+        st.write(conn.read_csv(csv_file))
 
-        st.write("## Parquet Files")
-        try:
-            st.write(conn.read_parquet(parquet_file))
-        except FileNotFoundError:
-            with conn.open(parquet_file, "wb") as f:
-                df.to_parquet(f)
-            st.write(conn.read_parquet(parquet_file))
+    st.write("#### Parquet Files")
+    with st.echo():
+        st.write(conn.read_parquet(parquet_file))
+    
+    st.write("#### List operations")
+    with st.echo():
+        st.write(conn.instance.ls("st-connection-test/"))
 
 with gcs_other:
     "## Working with Google Cloud Storage files"
@@ -219,30 +271,42 @@ with gcs_other:
         with st.echo():
             conn = st.connection('gcs', name="gcs-other", token=credentials_file_name)
 
-            text_file = "st-connection-test/test4.txt"
-            csv_file = "st-connection-test/test4.csv"
-            parquet_file = "st-connection-test/test4.parquet"
+        with st.expander("Setup code"):
+            with st.echo():
+                text_file = "st-connection-test/test4.txt"
+                csv_file = "st-connection-test/test4.csv"
+                parquet_file = "st-connection-test/test4.parquet"
+                try:
+                    _ = conn.read_text(text_file)
+                except FileNotFoundError:
+                    with conn.open(text_file, "wt") as f:
+                        f.write("This is a test")
+                
+                try:
+                    _ = conn.read_csv(csv_file)
+                except FileNotFoundError:
+                    with conn.open(csv_file, "wt") as f:
+                        df.to_csv(f, index=False)
+                
+                try:
+                    _ = conn.read_parquet(parquet_file)
+                except FileNotFoundError:
+                    with conn.open(parquet_file, "wb") as f:
+                        df.to_parquet(f)
 
-            st.write("## Text files")
-            try:
-                st.write(conn.read_text(text_file))
-            except FileNotFoundError:
-                with conn.open(text_file, "wt") as f:
-                    f.write("This is a test")
-                st.write(conn.read_text(text_file))
+        st.write("#### Text files")
 
-            st.write("## CSV Files")
-            try:
-                st.write(conn.read_csv(csv_file))
-            except FileNotFoundError:
-                with conn.open(csv_file, "wt") as f:
-                    df.to_csv(f, index=False)
-                st.write(conn.read_csv(csv_file))
+        with st.echo():
+            st.write(conn.read_text(text_file))
 
-            st.write("## Parquet Files")
-            try:
-                st.write(conn.read_parquet(parquet_file))
-            except FileNotFoundError:
-                with conn.open(parquet_file, "wb") as f:
-                    df.to_parquet(f)
-                st.write(conn.read_parquet(parquet_file))
+        st.write("#### CSV Files")
+        with st.echo():
+            st.write(conn.read_csv(csv_file))
+
+        st.write("#### Parquet Files")
+        with st.echo():
+            st.write(conn.read_parquet(parquet_file))
+        
+        st.write("#### List operations")
+        with st.echo():
+            st.write(conn.instance.ls("st-connection-test/"))
