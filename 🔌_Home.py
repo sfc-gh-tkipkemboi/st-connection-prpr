@@ -16,6 +16,12 @@ st.title("🔌 st.connection Private Preview")
 * 👉 **Try it out yourself** with the latest .whl file from [here](https://core-previews.s3-us-west-2.amazonaws.com/pr-6035/streamlit-1.17.0-py2.py3-none-any.whl).
 """
 
+with st.expander("🎈 Watch the feature walkthrough video 🎈"):
+    "*For the quick version just watch the first two minutes* 🙂"
+    st.markdown("""
+    <iframe src="https://drive.google.com/file/d/19xNGTLPxMCLHaRXaJbEqEAV60TvEQgXC/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+    """, unsafe_allow_html=True)
+
 tab1, tab2 = st.tabs([
     "🚀 With st.connection",
     "🐢 Compare to today"
