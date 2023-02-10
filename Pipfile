@@ -13,7 +13,7 @@ fsspec = "*"
 s3fs = "*"
 gcsfs = "*"
 snowflake-snowpark-python = {extras = ["pandas"], version = "*"}
-streamlit = {path = "./streamlit-1.17.0-py2.py3-none-any.whl"}
+streamlit = {path = "./streamlit-1.18.0-py2.py3-none-any.whl"}
 
 [dev-packages]
 
