@@ -13,7 +13,8 @@ st.title("🔌 st.connection Private Preview")
 **st.connection** makes it easy to connect your Streamlit apps to data, with a fraction of the code.
 
 * The full PR is [here](https://github.com/streamlit/streamlit/pull/6035).
-* 👉 **Try it out yourself** with the latest .whl file from [here](https://core-previews.s3-us-west-2.amazonaws.com/pr-6035/streamlit-1.17.0-py2.py3-none-any.whl).
+* 👉 **Try it out yourself** with the latest .whl file from [here](https://core-previews.s3-us-west-2.amazonaws.com/pr-6035/streamlit-1.18.0-py2.py3-none-any.whl).
+  * **Note:** You will need to manually install dependencies to get st.connection working locally - see docs for more info. We will improve this soon!
 """
 
 with st.expander("🎈 Watch the feature walkthrough video 🎈"):

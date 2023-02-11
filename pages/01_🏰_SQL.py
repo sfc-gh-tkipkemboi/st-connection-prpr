@@ -11,6 +11,8 @@ st.title('🔌 st.connection PrPr - SQL')
 
 st.markdown("""
 See the <a href='/Detailed_Docs#sql-connection' target='_self'>Detailed Docs</a> for quickstart, install instructions and the full API reference.
+
+**To run it yourself, do `pip install SQLAlchemy` and install the driver library for your [SQL Dialect](https://docs.sqlalchemy.org/en/20/dialects/index.html).**
 """, unsafe_allow_html=True)
 
 connection_secrets = """

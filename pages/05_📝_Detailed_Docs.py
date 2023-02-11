@@ -190,7 +190,7 @@ See the <a href='/Files' target='_self'>Files page</a> for full usage examples.
 The Files connection (`streamlit.connections.FileSystem`) is built on [fsspec](https://filesystem-spec.readthedocs.io/en/latest/?badge=latest).
 It supports connecting to S3, GCS, ABS, local files, FTP, HDFS, git and
 [more](https://filesystem-spec.readthedocs.io/en/latest/api.html#built-in-implementations). To use it, you will need to install fsspec as well as
-any needed file system-specific drivers.
+any needed file system-specific drivers. Find your driver [here](https://filesystem-spec.readthedocs.io/en/latest/api.html#other-known-implementations).
 """, unsafe_allow_html=True)
 
 st.code("""
@@ -260,7 +260,7 @@ st.markdown("""
 See the <a href='/Snowpark' target='_self'>Snowpark page</a> for full usage examples.
 
 The Snowpark connection (`streamlit.connections.Snowpark`) is built on [snowpark-python](https://docs.snowflake.com/en/developer-guide/snowpark/python/index.html).
-To use it, you will need to install snowpark-python and have access to a Snowflake account.
+To use it, you will need to `pip install snowflake-snowpark-python` and have access to a Snowflake account.
 """, unsafe_allow_html=True)
 
 """

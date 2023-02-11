@@ -13,10 +13,42 @@ st.title('🔌 st.connection PrPr - Snowpark')
 st.markdown("""
 See the <a href='/Detailed_Docs#snowpark-connection' target='_self'>Detailed Docs</a> for quickstart, install instructions and the full API reference.
 """, unsafe_allow_html=True)
+"""
+Snowpark connection API is shown here, but won't work in the Cloud app since it needs local Snowflake credentials.
 
-"Snowpark connection API is shown here, but won't work in the Cloud app since it needs local Snowflake credentials."
+To use it, you can:
+- Clone [this app](https://github.com/sfc-gh-jcarroll/st-connection-prpr) locally
+- Install the [whl file](https://core-previews.s3-us-west-2.amazonaws.com/pr-6035/streamlit-1.18.0-py2.py3-none-any.whl)
+  and do `pip install snowflake-snowpark-python` (or equivalent)
+  - If you have [pipenv](https://pipenv.pypa.io/en/latest/) installed, just do `pipenv sync`
+- Set up local credentials for your Snowflake account.
+"""
 
-"If you have Snowflake credentials, you can clone the app locally and use it with your existing creds."
+with st.expander("Examples of local Snowpark credentials setup"):
+    st.code("""
+# .streamlit/secrets.toml
+[connections.snowpark]
+authenticator = "externalbrowser"
+account = "[MYACCOUNT]"
+user = "[username]"
+role = "[MYROLE]"
+warehouse = "[MYWAREHOUSE]"
+    """, language = "toml")
+
+    "Alternatively, you can use `~/.snowsql/config` (syntax is the same except the header)"
+    st.code("""
+# ~/.snowsql/config
+[connections]
+authenticator = "externalbrowser"
+account = "[MYACCOUNT]"
+user = "[username]"
+role = "[MYROLE]"
+warehouse = "[MYWAREHOUSE]"
+    """, language = "toml")
+    """
+    *For questions on the required `account` value, see [here](https://docs.snowflake.com/en/user-guide/python-connector-api.html#label-account-format-info).
+    Full list of supported parameters [here](https://docs.snowflake.com/en/user-guide/python-connector-api.html#connect).*
+    """
 
 run_the_code = st.checkbox("Try running the code (requires local snowflake creds)")
 

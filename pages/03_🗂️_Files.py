@@ -13,6 +13,10 @@ st.title('🔌 st.connection PrPr - Files')
 
 st.markdown("""
 See the <a href='/Detailed_Docs#file-connection' target='_self'>Detailed Docs</a> for quickstart, install instructions and the full API reference.
+
+**To run it yourself, do `pip install fsspec`. For authenticated cloud services, you'll also need to pip install the right driver:
+`s3fs` for AWS S3, `gcsfs` for GCS, etc. See the full list of drivers
+[here](https://filesystem-spec.readthedocs.io/en/latest/api.html#other-known-implementations).**
 """, unsafe_allow_html=True)
 
 df = pd.DataFrame({"Owner": ["jerry", "barbara", "alex"], "Pet": ["fish", "cat", "puppy"], "Count": [4, 2, 1]})
