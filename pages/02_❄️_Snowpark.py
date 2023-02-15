@@ -65,10 +65,11 @@ st.subheader("read_sql() for convenience")
 
 with st.expander("⚠️ **NOTE:** On read_sql and native Snowpark dataframes"):
     """
-    If you do further calculations on the dataframe returned this way, these will run in the app,
-    and may be slower than performing them natively in a Snowpark DataFrame. This approach is good for
-    prototyping and fast app building, but consider moving to the Session() API below for high use apps
-    or apps that use a lot of data.
+    - `conn.read_sql()` returns a pandas dataframe, meaning that any further calculations or transformations
+      will run in the app execution thread directly. This might be fine for initial prototyping or smaller scale
+      use cases.
+    - However in many cases, it will be faster to run processing natively in a Snowpark Dataframe, particularly for
+      large data sets or intensive use cases. In this case, you will need to use `conn.Session()` as described below.
     """
 
 with st.echo():
