@@ -2,7 +2,7 @@ from types import ModuleType
 from typing import Sequence
 from openai import ChatCompletion, Completion
 
-from base_connection import BaseConnection
+from streamlit_openai.base_connection import BaseConnection
 from streamlit.runtime.caching import cache_data, cache_resource
 from tenacity import retry, wait_fixed, stop_after_attempt, RetryCallState
 

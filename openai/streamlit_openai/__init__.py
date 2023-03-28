@@ -1,1 +1,1 @@
-from openai_connection import connect_openai, OpenAIConnection
+from streamlit_openai.openai_connection import connect_openai, OpenAIConnection

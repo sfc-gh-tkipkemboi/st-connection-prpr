@@ -2,3 +2,4 @@
 cli/.streamlit/secrets.toml
 *.db
 test-files/*
+*venv/*
