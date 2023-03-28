@@ -1,0 +1,2 @@
+streamlit==1.20
+"streamlit_openai @ git+https://github.com/sfc-gh-jcarroll/st-connection-prpr.git#subdirectory=openai"
