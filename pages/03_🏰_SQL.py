@@ -3,32 +3,30 @@ import streamlit as st
 from datetime import timedelta
 
 st.set_page_config(
-    page_title='st.connection PrPr - SQL',
-    page_icon='🔌'
+    page_title='st.connection for SQL',
+    page_icon='🏰'
 )
 
-st.title('🔌 st.connection PrPr - SQL')
-
-st.markdown("""
-See the <a href='/Detailed_Docs#sql-connection' target='_self'>Detailed Docs</a> for quickstart, install instructions and the full API reference.
-
-**To run it yourself, do `pip install SQLAlchemy` and install the driver library for your [SQL Dialect](https://docs.sqlalchemy.org/en/20/dialects/index.html).**
-""", unsafe_allow_html=True)
+st.title('🏰 st.connection for SQL')
 
 connection_secrets = """
 # .streamlit/secrets.toml
-[connections.sql]
-url = "sqlite:///mydb.db"
+[connections.pets_db]
+url = "sqlite:///pets.db"
 """
 
 st.subheader("Init")
 
-"Initialize and view the connection:"
+"""
+Initialize the connection:
 
-with st.echo():
-    conn = st.connection('sql')
+```python
+conn = st.connection('pets_db', type='sql')
+```
 
-    conn
+"""
+
+conn = st.connection('sql')
 
 "secrets.toml looks like this:"
 st.code(connection_secrets, language='toml')
@@ -53,16 +51,20 @@ with st.echo():
             )
         s.commit()
             
-st.subheader("read_sql() for common cases")
+st.subheader("sql() for common cases")
 
 """
 For a typical use case where you just need to query and cache some data, it's much simpler.
-Just use `conn.read_sql()` and get a dataframe back. By default it caches the result without
+Just use `conn.sql()` and get a (?) `pyarrow.Table` (?) back. By default it caches the result without
 expiration, or you can add a TTL. This also support parameters, pagination, date conversions,
 etc (see the full docs).
+
+```python
+pet_owners = conn.sql('select * from pet_owners', ttl=timedelta(minutes=10))
+st.dataframe(pet_owners)
+```
 """
 
-with st.echo():
-    df = conn.read_sql('select * from pet_owners', ttl=timedelta(minutes=10))
-    st.dataframe(df)
+df = conn.read_sql('select * from pet_owners', ttl=timedelta(minutes=10))
+st.dataframe(df)
 

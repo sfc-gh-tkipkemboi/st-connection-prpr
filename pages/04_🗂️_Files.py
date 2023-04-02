@@ -5,19 +5,19 @@ from tempfile import NamedTemporaryFile
 import pandas as pd
 
 st.set_page_config(
-    page_title='st.connection PrPr - Files',
-    page_icon='🔌'
+    page_title='st.connection for Files',
+    page_icon='🗂️'
 )
 
-st.title('🔌 st.connection PrPr - Files')
+st.title('🗂️ st.connection for Files')
 
 st.markdown("""
-See the <a href='/Detailed_Docs#file-connection' target='_self'>Detailed Docs</a> for quickstart, install instructions and the full API reference.
+### Details of this API are still under development and subject to change
 
 **To run it yourself, do `pip install fsspec`. For authenticated cloud services, you'll also need to pip install the right driver:
 `s3fs` for AWS S3, `gcsfs` for GCS, etc. See the full list of drivers
 [here](https://filesystem-spec.readthedocs.io/en/latest/api.html#other-known-implementations).**
-""", unsafe_allow_html=True)
+""")
 
 df = pd.DataFrame({"Owner": ["jerry", "barbara", "alex"], "Pet": ["fish", "cat", "puppy"], "Count": [4, 2, 1]})
 
@@ -32,8 +32,8 @@ local, s3, s3_other, gcs, gcs_other = st.tabs(
 )
 with local:
     st.write("## Working with local files")
-    with st.echo():
-        conn = st.connection('files')
+    st.code("conn = st.connection('local', type='files')")
+    conn = st.connection('files')
 
     with st.expander("Setup code"):
         with st.echo():
@@ -90,8 +90,8 @@ secret = "..."
         language="toml",
     )
 
-    with st.echo():
-        conn = st.connection('s3')
+    st.code("conn = st.connection('s3', type='s3')")
+    conn = st.connection('s3')
 
     with st.expander("Setup code"):
         with st.echo():
@@ -147,8 +147,8 @@ with s3_other:
         "`AWS_SECRET_ACCES_KEY` environment variables"
     )
 
-    with st.echo():
-        conn = st.connection('s3', name="s3-other")
+    st.code("conn = st.connection('', type='s3')")
+    conn = st.connection('s3', name="s3-other")
 
     with st.expander("Setup code"):
         with st.echo():
@@ -212,8 +212,8 @@ client_x509_cert_url = "..."
         language="toml",
     )
 
-    with st.echo():
-        conn = st.connection('gcs')
+    st.code("conn = st.connection('gcs', type='gcs')")
+    conn = st.connection('gcs')
 
     with st.expander("Setup code"):
         with st.echo():
@@ -272,8 +272,8 @@ with gcs_other:
 
         credentials_file_name = f.name
 
-        with st.echo():
-            conn = st.connection('gcs', name="gcs-other", token=credentials_file_name)
+        st.code("conn = st.connection('', type='gcs', token=credentials_file_name)")
+        conn = st.connection('gcs', name="gcs-other", token=credentials_file_name)
 
         with st.expander("Setup code"):
             with st.echo():

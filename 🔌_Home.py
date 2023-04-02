@@ -1,27 +1,28 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title='st.connection PrPr',
+    page_title='st.connection Preview',
     page_icon='🔌'
 )
 
-st.title("🔌 st.connection Private Preview")
+st.title("🔌 Introducing st.connection")
 
 """
-**Welcome to the st.connection preview!**
+## Quickly and easily connect your app to data and APIs!
 
-**st.connection** makes it easy to connect your Streamlit apps to data, with a fraction of the code.
+### Setting up connections is PAINFUL 🤕
 
-* The full PR is [here](https://github.com/streamlit/streamlit/pull/6035).
-* 👉 **Try it out yourself** with the latest .whl file from [here](https://core-previews.s3-us-west-2.amazonaws.com/pr-6035/streamlit-1.18.0-py2.py3-none-any.whl).
-  * **Note:** You will need to manually install dependencies to get st.connection working locally - see docs for more info. We will improve this soon!
+Connecting to data sources and APIs is one of the most annoying parts when building data apps. It typically requires finding and installing
+external packages, figuring out how to manage your credentials securely outside of code, and finding the right methods to get data out in
+the format you need. Not forgetting the need to add Streamlit caching capabilities! For example you can see the 14 lines of code in our
+[MySQL tutorial here](https://docs.streamlit.io/knowledge-base/tutorials/databases/mysql#write-your-streamlit-app) - using a mysql.connector,
+st.cache_resource, st.cache_data, managing a cursor, and converting the row result format!
+
+### Meet `st.connection` 🥂
+
+We're very excited to release st.connection, which makes it easy to connect your Streamlit apps to data and APIs, with a fraction of the code.
+With st.connection, the MySQL example above becomes just 4 lines of code:
 """
-
-with st.expander("🎈 Watch the feature walkthrough video 🎈"):
-    "*For the quick version just watch the first two minutes* 🙂"
-    st.markdown("""
-    <iframe src="https://drive.google.com/file/d/19xNGTLPxMCLHaRXaJbEqEAV60TvEQgXC/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
-    """, unsafe_allow_html=True)
 
 tab1, tab2 = st.tabs([
     "🚀 With st.connection",
@@ -32,9 +33,9 @@ with tab1:
     st.code("""
 import streamlit as st
 
-conn = st.connection('sql')
-df = conn.read_sql('select * from pet_owners')
-st.dataframe(df)
+conn = st.connection('pet_db', type='mysql')
+pet_owners = conn.sql('select * from pet_owners')
+st.dataframe(pet_owners)
     """, language='python'
     )
 
@@ -64,19 +65,29 @@ for row in rows:
     )
 
 """
+
+### What's included
+
 st.connection includes:
 
 - `st.connection()` factory method to initialize ready-to-use data connection objects
-- Concrete implementations in Streamlit for a few key data sources:
-  - SQL engines including Postgresql, MySQL, sqlite, MS SQL Server, Snowflake, Oracle, BigQuery, Redshift and
-[more](https://docs.sqlalchemy.org/en/14/dialects/index.html)
-  - Cloud file storage including S3, GCS, ABS, FTP, HDFS, and [more](https://filesystem-spec.readthedocs.io/en/latest/api.html#built-in-implementations)
-  - Snowpark for Snowflake
+- Concrete implementations in Streamlit for a few key data sources
 - An extendable `BaseConnection` class to easily build (and share) new connection types!
-"""
 
-"""
-👈 Check out the supported connection types, view the detailed docs, and send us your feedback!
+Here are the included connections it supports today:
+
+- Many SQL dialects (MySQL, Postgres, Snowflake, BigQuery, Microsoft SQL Server, ...)
+- Snowflake Snowpark
+- Cloud file storage (S3, GCS, Azure Blob Storage, ...)
+- And more coming very very soon!
+
+### View the code
+
+Find the WIP feature code in [feature/st.experimental_connection branch](https://github.com/streamlit/streamlit/tree/feature/st.experimental_connection) of streamlit/streamlit
+- [Connection classes](https://github.com/streamlit/streamlit/tree/feature/st.experimental_connection/lib/streamlit/connections)
+- [Factory function](https://github.com/streamlit/streamlit/blob/feature/st.experimental_connection/lib/streamlit/runtime/connection_factory.py)
+
+👈 Dive in
 
 **This preview is shared for feedback purposes only and is not intended for any production-like use.**
 """
