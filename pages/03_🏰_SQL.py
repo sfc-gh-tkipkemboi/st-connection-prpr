@@ -11,7 +11,7 @@ st.title('🏰 st.connection for SQL')
 
 connection_secrets = """
 # .streamlit/secrets.toml
-[connections.pets_db]
+[connection.pets_db]
 url = "sqlite:///pets.db"
 """
 
@@ -21,7 +21,9 @@ st.subheader("Init")
 Initialize the connection:
 
 ```python
-conn = st.connection('pets_db', type='sql')
+# Note both `name` and `connection_class` are positional, so the argument
+# name can be omitted
+conn = st.connection(name='pet_db', connection_class='sql')
 ```
 
 """
@@ -51,16 +53,18 @@ with st.echo():
             )
         s.commit()
             
-st.subheader("sql() for common cases")
+st.subheader("query() for common cases")
 
 """
 For a typical use case where you just need to query and cache some data, it's much simpler.
-Just use `conn.sql()` and get a (?) `pyarrow.Table` (?) back. By default it caches the result without
-expiration, or you can add a TTL. This also support parameters, pagination, date conversions,
-etc (see the full docs).
+Just use `conn.query()`. By default it caches the result without expiration, or you can add a TTL.
+This also support parameters, pagination, date conversions, etc (see the full docs).
+
+By default, `query()` returns a `pandas.DataFrame`. We also intend to easily support other common
+return formats, like `pyarrow.Table`.
 
 ```python
-pet_owners = conn.sql('select * from pet_owners', ttl=timedelta(minutes=10))
+pet_owners = conn.query('select * from pet_owners', ttl=timedelta(minutes=10))
 st.dataframe(pet_owners)
 ```
 """

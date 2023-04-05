@@ -32,7 +32,7 @@ local, s3, s3_other, gcs, gcs_other = st.tabs(
 )
 with local:
     st.write("## Working with local files")
-    st.code("conn = st.connection('local', type='files')")
+    st.code("conn = st.connection('local', connection_class='files')")
     conn = st.connection('files')
 
     with st.expander("Setup code"):
@@ -90,7 +90,7 @@ secret = "..."
         language="toml",
     )
 
-    st.code("conn = st.connection('s3', type='s3')")
+    st.code("conn = st.connection('s3', connection_class='s3')")
     conn = st.connection('s3')
 
     with st.expander("Setup code"):
@@ -147,7 +147,7 @@ with s3_other:
         "`AWS_SECRET_ACCES_KEY` environment variables"
     )
 
-    st.code("conn = st.connection('', type='s3')")
+    st.code("conn = st.connection('', connection_class='s3')")
     conn = st.connection('s3', name="s3-other")
 
     with st.expander("Setup code"):
@@ -212,7 +212,7 @@ client_x509_cert_url = "..."
         language="toml",
     )
 
-    st.code("conn = st.connection('gcs', type='gcs')")
+    st.code("conn = st.connection('gcs', connection_class='gcs')")
     conn = st.connection('gcs')
 
     with st.expander("Setup code"):
@@ -272,7 +272,7 @@ with gcs_other:
 
         credentials_file_name = f.name
 
-        st.code("conn = st.connection('', type='gcs', token=credentials_file_name)")
+        st.code("conn = st.connection('', connection_class='gcs', token=credentials_file_name)")
         conn = st.connection('gcs', name="gcs-other", token=credentials_file_name)
 
         with st.expander("Setup code"):

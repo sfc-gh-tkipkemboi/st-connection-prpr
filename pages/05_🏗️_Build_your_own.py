@@ -66,13 +66,12 @@ def sql(self, query: str, ttl: int = 3600, **kwargs) -> pd.DataFrame:
 
 **:tada: That's it! You've implemented a minimal Connection class that is ready to be used with st.connection. :balloon:**
 
-### [Draft! Feedback welcome!] Best Practices for Connections
+## [Draft! Feedback welcome!] Best Practices for Connections
 
-**Cached `get_*()`  methods**
+### Read / Get  methods
 
 We expect the most frequent use case for Connection objects will be straightforward data reads or GET calls to an API. We recommend the following:
 
-- Naming the method `get_*()` with an appropriate noun
 - Is wrapped by `st.cache_data` by default
 - Use simple required arguments, an optional `ttl` argument for caching, and any other optional arguments that users may expect or commonly use in a “pareto 80%” use case.
     - Setting `ttl = 0` causes the result to not be cached
@@ -81,7 +80,28 @@ We expect the most frequent use case for Connection objects will be straightforw
     - For document / object data: a dict-like object, preferably strongly typed, ideally with convenience methods like `to_str()` that returns the core result directly.
 - Handles errors or stale connections with the reset/retry pattern described below.
 
-**Handling stale connections**
+**Method naming**
+
+We're debating the best way to name these methods. Currently leaning towards:
+- single verbs for data sources / tabular data (`read()`, `query()`, etc)
+- `get_noun()` for REST-API style connections
+  - Alternate ideas would just be `get()` with the object/endpoint as an argument, or `noun()`
+
+**Method return values**
+
+We think it's useful to have some flexibility in this.
+- For a quick data science prototype, `pandas.DataFrame` can work great.
+- More modern / performance sensitive developers may want `pyarrow.Table`, especially if the underlying data source supports it natively
+- An API can have REST, streaming response, etc
+- In some cases, you may want a lazy-evaluated result / future object (although we haven't figured out how to auto-cache these effectively yet)
+
+For the initial launch, we will probably pick a type: for tabular data, encourage returning pandas DF or arrow Table.
+
+For (near) future, one idea is to have a `format='pandas'` argument that can have a default set in the connection class, be overridden in class
+construction and/or be set in specific method calls, and have the class know how to convert from the "default" format to any other supported formats.
+This could also possibly take a Callable that handles the conversion and returns the desired custom format. What do you think?
+
+### Handling stale connections
 
 Connection objects are cached in Streamlit by default. In some cases, an underlying connection may unexpectedly stop working (such as due to OAuth token expiring,
 connection being closed on the server side, etc). To handle this case, BaseConnection provides a `reset()` method to re-create the connection object.
