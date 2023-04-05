@@ -53,15 +53,15 @@ def cursor(self) -> duckdb.DuckDBPyConnection:
 and conform to the st.connection best practices (see below).
 
 ```python
-def sql(self, query: str, ttl: int = 3600, **kwargs) -> pd.DataFrame:
+def query(self, query: str, ttl: int = 3600, **kwargs) -> pd.DataFrame:
 
     @cache_data(ttl=ttl)
-    def _sql(query: str, **kwargs) -> pd.DataFrame:
+    def _query(query: str, **kwargs) -> pd.DataFrame:
         cursor = self.cursor()
         cursor.execute(query, **kwargs)
         return cursor.df()
     
-    return _sql(query, **kwargs)
+    return _query(query, **kwargs)
 ```
 
 **:tada: That's it! You've implemented a minimal Connection class that is ready to be used with st.connection. :balloon:**
@@ -76,8 +76,9 @@ We expect the most frequent use case for Connection objects will be straightforw
 - Use simple required arguments, an optional `ttl` argument for caching, and any other optional arguments that users may expect or commonly use in a “pareto 80%” use case.
     - Setting `ttl = 0` causes the result to not be cached
 - Return either:
-    - For tabular data: a `pyarrow.Table` (or possibly a `pandas.DataFrame`)
-    - For document / object data: a dict-like object, preferably strongly typed, ideally with convenience methods like `to_str()` that returns the core result directly.
+    - For tabular data: a `pandas.DataFrame` or a `pyarrow.Table`
+    - For document / object data: a dict-like object (typical default today - we want to find a pattern to expose the "core" response as well)
+    - More discussion on this below 👇
 - Handles errors or stale connections with the reset/retry pattern described below.
 
 **Method naming**
@@ -92,7 +93,7 @@ We're debating the best way to name these methods. Currently leaning towards:
 We think it's useful to have some flexibility in this.
 - For a quick data science prototype, `pandas.DataFrame` can work great.
 - More modern / performance sensitive developers may want `pyarrow.Table`, especially if the underlying data source supports it natively
-- An API can have REST, streaming response, etc
+- An API can have REST, streaming response, etc; developer may also just want the "core" response (e.g. the text an LLM gives back) without the wrapping object
 - In some cases, you may want a lazy-evaluated result / future object (although we haven't figured out how to auto-cache these effectively yet)
 
 For the initial launch, we will probably pick a type: for tabular data, encourage returning pandas DF or arrow Table.
