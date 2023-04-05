@@ -74,7 +74,6 @@ We expect the most frequent use case for Connection objects will be straightforw
 
 - Is wrapped by `st.cache_data` by default
 - Use simple required arguments, an optional `ttl` argument for caching, and any other optional arguments that users may expect or commonly use in a “pareto 80%” use case.
-    - Setting `ttl = 0` causes the result to not be cached
 - Return either:
     - For tabular data: a `pandas.DataFrame` or a `pyarrow.Table`
     - For document / object data: a dict-like object (typical default today - we want to find a pattern to expose the "core" response as well)
