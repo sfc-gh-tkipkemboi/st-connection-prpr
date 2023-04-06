@@ -34,7 +34,7 @@ with tab1:
 import streamlit as st
 
 conn = st.connection(name='pet_db', connection_class='sql')
-pet_owners = conn.sql('select * from pet_owners')
+pet_owners = conn.query('select * from pet_owners')
 st.dataframe(pet_owners)
     """, language='python'
     )
