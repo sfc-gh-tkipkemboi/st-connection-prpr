@@ -36,7 +36,7 @@ If you are using `secrets.toml`, you'll want to create a section called `[connec
 name the connection whatever you'd like.
 
 ```toml
-[connections.pet_db]
+[connections.pets_db]
 dialect = "mysql"
 url = "mysqldb://scott:tiger@192.168.0.134/pet_db"
 ```
@@ -51,6 +51,6 @@ The type argument can be a string (for built-in connections) or a class (for con
 
 import streamlit as st
 
-conn = st.connection(name='pet_db', connection_class='sql')
+conn = st.connection('pets_db', type='sql')
 ```
 """

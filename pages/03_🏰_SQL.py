@@ -11,7 +11,7 @@ st.title('🏰 st.connection for SQL')
 
 connection_secrets = """
 # .streamlit/secrets.toml
-[connection.pets_db]
+[connections.pets_db]
 url = "sqlite:///pets.db"
 """
 
@@ -19,16 +19,9 @@ st.subheader("Init")
 
 """
 Initialize the connection:
-
-```python
-# Note both `name` and `connection_class` are positional, so the argument
-# name can be omitted
-conn = st.connection(name='pet_db', connection_class='sql')
-```
-
 """
-
-conn = st.connection('sql')
+with st.echo():
+    conn = st.experimental_connection('pets_db', type='sql')
 
 "secrets.toml looks like this:"
 st.code(connection_secrets, language='toml')
@@ -62,13 +55,8 @@ This also support parameters, pagination, date conversions, etc (see the full do
 
 By default, `query()` returns a `pandas.DataFrame`. We also intend to easily support other common
 return formats, like `pyarrow.Table`.
-
-```python
-pet_owners = conn.query('select * from pet_owners', ttl=timedelta(minutes=10))
-st.dataframe(pet_owners)
-```
 """
 
-df = conn.read_sql('select * from pet_owners', ttl=timedelta(minutes=10))
-st.dataframe(df)
-
+with st.echo():
+    pet_owners = conn.query('select * from pet_owners', ttl=timedelta(minutes=10))
+    st.dataframe(pet_owners)
