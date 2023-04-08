@@ -87,6 +87,7 @@ with s3:
         """
 # In secrets.toml
 [connections.s3]
+protocol = "s3"
 key = "..."
 secret = "..."
     """,
@@ -201,6 +202,7 @@ with gcs:
         """
 # In secrets.toml
 [connections.gcs]
+protocol = "gcs"
 type = "..."
 project_id = "..."
 private_key_id = "..."
