@@ -1,8 +1,7 @@
 from types import ModuleType
 from typing import Sequence
-from openai import ChatCompletion, Completion
 
-from streamlit_openai.base_connection import BaseConnection
+from streamlit.connections import ExperimentalBaseConnection
 from streamlit.runtime.caching import cache_data
 from tenacity import retry, wait_fixed, stop_after_attempt, RetryCallState
 
@@ -14,18 +13,11 @@ def _reset_on_retry_failure(retry_state: RetryCallState):
         self.reset()
 
 
-class OpenAIConnection(BaseConnection[ModuleType]):
-    _default_connection_name = "openai"
-
-    def _secrets_as_dict(self) -> dict:
-        secrets = self.get_secrets()
-        return {k: v for k, v in secrets.items()}
-
-
-    def connect(self, **kwargs) -> ModuleType:
+class OpenAIConnection(ExperimentalBaseConnection[ModuleType]):
+    def _connect(self, **kwargs) -> ModuleType:
         import openai
 
-        merged_args = {**self._secrets_as_dict(), **kwargs}
+        merged_args = {**self._secrets.to_dict(), **kwargs}
         openai.api_key = merged_args.pop('api_key')
 
         self.model = merged_args.get('model', 'text-davinci-003')
@@ -35,10 +27,9 @@ class OpenAIConnection(BaseConnection[ModuleType]):
 
         return openai
 
-
+    @property
     def client(self) -> ModuleType:
         return self._instance
-
 
     @retry(
             wait=wait_fixed(3),
@@ -57,7 +48,7 @@ class OpenAIConnection(BaseConnection[ModuleType]):
 
         @cache_data(ttl=ttl, max_entries=max_entries, show_spinner='Asking GPT...')
         def _get_completion(model: str, prompt: str, **kwargs) -> str:
-            response = self._instance.Completion.create(
+            response = self.client.Completion.create(
                 model=model,
                 prompt=prompt,
                 **kwargs
@@ -78,7 +69,7 @@ class OpenAIConnection(BaseConnection[ModuleType]):
 
         @cache_data(ttl=ttl, max_entries=max_entries, show_spinner='Asking GPT...')
         def _get_embedding(model: str, text: str, **kwargs) -> Sequence[float]:
-            response = self._instance.Embedding.create(
+            response = self.client.Embedding.create(
                 input = [text],
                 model=model,
                 **kwargs
