@@ -55,6 +55,9 @@ class FilesConnection(ExperimentalBaseConnection["AbstractFileSystem"]):
         if protocol == "gcs" and secrets:
             secrets = {"token": secrets}
 
+        if self.protocol is None:
+            self.protocol = protocol
+        
         secrets.update(kwargs)
 
         fs = filesystem(protocol, **secrets)
@@ -146,3 +149,26 @@ class FilesConnection(ExperimentalBaseConnection["AbstractFileSystem"]):
             return _read_parquet(path, connection_name=self._connection_name, **kwargs)
         # TODO: if input_format is None, try to infer it from file extension
         raise ValueError(f"{input_format} is not a valid value for `input_format=`.")
+
+    def _repr_html_(self) -> str:
+        module_name = getattr(self, "__module__", None)
+        class_name = type(self).__name__
+        if self._connection_name:
+            name = f"`{self._connection_name}` "
+            if len(self._secrets) > 0:
+                cfg = f"""- Configured from `[connections.{self._connection_name}]`
+                """
+            else:
+                cfg = ""
+        else:
+            name = ""
+            cfg = ""
+        md = f"""
+        ---
+        **st.connection {name}built from `{module_name}.{class_name}`**
+        {cfg}
+        - Protocol: `{self.protocol}`
+        - Learn more using `st.help()`
+        ---
+        """
+        return md

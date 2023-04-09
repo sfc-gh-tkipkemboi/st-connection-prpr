@@ -36,6 +36,7 @@ with local:
     with st.echo():
         from files_connection import FilesConnection
         conn = st.experimental_connection('local', type=FilesConnection)
+        conn
 
     with st.expander("Setup code"):
         with st.echo():
@@ -96,6 +97,7 @@ secret = "..."
 
     with st.echo():
         conn = st.experimental_connection('s3', type=FilesConnection)
+        conn
 
     with st.expander("Setup code"):
         with st.echo():
@@ -153,6 +155,7 @@ with s3_other:
 
     with st.echo():
         conn = st.experimental_connection('', protocol='s3', type=FilesConnection)
+        conn
 
     with st.expander("Setup code"):
         with st.echo():
@@ -219,6 +222,7 @@ client_x509_cert_url = "..."
 
     with st.echo():
         conn = st.experimental_connection('gcs', type=FilesConnection)
+        conn
 
     with st.expander("Setup code"):
         with st.echo():
@@ -279,6 +283,7 @@ with gcs_other:
 
         with st.echo():
             conn = st.experimental_connection('', protocol='gcs', type=FilesConnection, token=credentials_file_name)
+            conn
 
         with st.expander("Setup code"):
             with st.echo():
