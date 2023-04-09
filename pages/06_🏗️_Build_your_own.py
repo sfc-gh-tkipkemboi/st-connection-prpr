@@ -64,7 +64,39 @@ def query(self, query: str, ttl: int = 3600, **kwargs) -> pd.DataFrame:
 ```
 
 **:tada: That's it! You've implemented a minimal Connection class that is ready to be used with st.connection. :balloon:**
+"""
 
+with st.expander("To show it's that easy, see the DuckDB code running here :rocket:"):
+    """
+    You can view the DuckDB connection source code
+    [here](https://github.com/sfc-gh-jcarroll/st-connection-prpr/blob/main/duckdb_connection/connection.py).
+    """
+
+    with st.echo():
+        from duckdb_connection import DuckDBConnection
+
+        conn = st.experimental_connection("duckdb", type=DuckDBConnection, database=':memory:')
+        conn
+
+    "Let's insert some data with the underlying duckdb cursor"
+    with st.echo():
+        c = conn.cursor()
+        # create a table
+        c.execute("CREATE TABLE IF NOT EXISTS items(item VARCHAR, value DECIMAL(10,2), count INTEGER)")
+        # drop any existing data from a prior run ;)
+        c.execute("DELETE FROM items")
+        # insert two items into the table
+        c.execute("INSERT INTO items VALUES ('jeans', 20.0, 1), ('hammer', 42.2, 2)")
+        # insert a row using prepared statements
+        c.execute("INSERT INTO items VALUES (?, ?, ?)", ['laptop', 2000, 1])
+
+    "Now check out the awesome convenience method!"
+
+    with st.echo():
+        df = conn.query("select * from items")
+        st.dataframe(df)
+
+"""
 ## [Draft! Feedback welcome!] Best Practices for Connections
 
 ### Read / Get  methods
