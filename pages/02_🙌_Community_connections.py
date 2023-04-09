@@ -17,7 +17,7 @@ import streamlit as st
 # We haven't actually built this one yet... want to help? ;)
 from streamlit_extras.gspread_connection import GSpreadConnection
 
-conn = st.connection("pets_gsheet", GSpreadConnection)
+conn = st.experimental_connection("pets_gsheet", GSpreadConnection)
 pet_owners = conn.get_worksheet("pet_owners")
 st.dataframe(pet_owners)
 ```

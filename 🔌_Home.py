@@ -33,7 +33,7 @@ with tab1:
     st.code("""
 import streamlit as st
 
-conn = st.connection('pets_db', type='sql')
+conn = st.experimental_connection('pets_db', type='sql')
 pet_owners = conn.query('select * from pet_owners')
 st.dataframe(pet_owners)
     """, language='python'

@@ -23,10 +23,10 @@ st.connection makes it easy to build, use and share your own connection implemen
 of the underlying connection object to be specified.
 
 ```python
-from streamlit.connections import BaseConnection
+from streamlit.connections import ExperimentalBaseConnection
 import duckdb
 
-class DuckDBConnection(BaseConnection[duckdb.DuckDBPyConnection])
+class DuckDBConnection(ExperimentalBaseConnection[duckdb.DuckDBPyConnection])
 ```
 
 2. Add a `connect()` method that sets up and returns the underlying connection object. It can pull

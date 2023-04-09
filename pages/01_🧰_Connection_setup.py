@@ -51,6 +51,6 @@ The type argument can be a string (for built-in connections) or a class (for con
 
 import streamlit as st
 
-conn = st.connection('pets_db', type='sql')
+conn = st.experimental_connection('pets_db', type='sql')
 ```
 """
