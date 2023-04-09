@@ -7,31 +7,6 @@ st.set_page_config(
     page_icon='🏰'
 )
 
-
-def _repr_html_(self) -> str:
-    module_name = getattr(self, "__module__", None)
-    class_name = type(self).__name__
-    if self._connection_name:
-        name = f"`{self._connection_name}` "
-        if len(self._secrets) > 0:
-            cfg = f"""- Configured from `[connections.{self._connection_name}]`
-            """
-        else:
-            cfg = ""
-    else:
-        name = ""
-        cfg = ""
-    # TODO: Make the dialect line more robust (e.g. figure it out from URL if needed, maybe include driver too)
-    md = f"""
-    ---
-    **st.connection {name}built from `{module_name}.{class_name}`**
-    {cfg}
-    - Dialect: `{self._secrets.dialect}`
-    - Learn more using `st.help()`
-    ---
-    """
-    return md
-
 st.title('🏰 st.connection for SQL')
 
 connection_secrets = """
@@ -47,10 +22,36 @@ Initialize the connection:
 """
 with st.echo():
     conn = st.experimental_connection('pets_db', type='sql')
-    st.write(_repr_html_(conn))
 
 "secrets.toml looks like this:"
 st.code(connection_secrets, language='toml')
+
+with st.expander("`_repr_html_()` Example"):
+    def _repr_html_(self) -> str:
+        module_name = getattr(self, "__module__", None)
+        class_name = type(self).__name__
+        if self._connection_name:
+            name = f"`{self._connection_name}` "
+            if len(self._secrets) > 0:
+                cfg = f"""- Configured from `[connections.{self._connection_name}]`
+                """
+            else:
+                cfg = ""
+        else:
+            name = ""
+            cfg = ""
+        # TODO: Make the dialect line more robust (e.g. figure it out from URL if needed, maybe include driver too)
+        md = f"""
+        ---
+        **st.connection {name}built from `{module_name}.{class_name}`**
+        {cfg}
+        - Dialect: `{self._secrets.dialect}`
+        - Learn more using `st.help()`
+        ---
+        """
+        return md
+    with st.echo():
+        st.write(_repr_html_(conn))
 
 st.subheader("Use session() for writes and transactions")
 
