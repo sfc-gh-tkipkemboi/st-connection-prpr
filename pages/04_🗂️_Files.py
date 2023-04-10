@@ -13,7 +13,14 @@ st.set_page_config(
 st.title('🗂️ st.connection for Files')
 
 st.markdown("""
-### Details of this API are still under development and subject to change
+`FilesConnection` provides an easy way to connect to any [fsspec](https://filesystem-spec.readthedocs.io/en/latest/)-compatible
+data source like S3, GCS, HDFS, sftp, etc. It has the following core methods:
+- `open(path, mode = 'rb')`: Get a file handle for file at the given path. Not cached.
+- `read(path, input_format)`: Read the file at `path` and return a pandas.DataFrame. Cached by default.
+  - Currently accepted input formats are `csv`, `parquet`, and `text` (text returns a string instead of a DF)
+- `fs` property to get the underlying fsspec AbstractFileSystem for additional commands, e.g. `conn.fs.ls('.')`
+
+See working examples below for local files, AWS S3, and Google GCS.
 
 **To run it yourself, do `pip install fsspec`. For authenticated cloud services, you'll also need to pip install the right driver:
 `s3fs` for AWS S3, `gcsfs` for GCS, etc. See the full list of drivers
@@ -44,9 +51,9 @@ with local:
             csv_file = "test-files/test.csv"
             parquet_file = "test-files/test.parquet"
             try:
-                _ = conn.client.ls("./test-files/")
+                _ = conn.fs.ls("./test-files/")
             except FileNotFoundError:
-                conn.client.mkdir("./test-files/")
+                conn.fs.mkdir("./test-files/")
             try:
                 _ = conn.read(text_file, input_format='text')
             except FileNotFoundError:
@@ -137,7 +144,7 @@ secret = "..."
     
     st.write("#### List operations")
     with st.echo():
-        st.write(conn.client.ls("st-connection-test/"))
+        st.write(conn.fs.ls("st-connection-test/"))
 
 with s3_other:
     st.write("## Working with S3 files")
@@ -194,7 +201,7 @@ with s3_other:
     
     st.write("#### List operations")
     with st.echo():
-        st.write(conn.client.ls("st-connection-test/"))
+        st.write(conn.fs.ls("st-connection-test/"))
 
 
 with gcs:
@@ -262,7 +269,7 @@ client_x509_cert_url = "..."
     
     st.write("#### List operations")
     with st.echo():
-        st.write(conn.client.ls("st-connection-test/"))
+        st.write(conn.fs.ls("st-connection-test/"))
 
 with gcs_other:
     "## Working with Google Cloud Storage files"
@@ -323,4 +330,4 @@ with gcs_other:
         
         st.write("#### List operations")
         with st.echo():
-            st.write(conn.client.ls("st-connection-test/"))
+            st.write(conn.fs.ls("st-connection-test/"))

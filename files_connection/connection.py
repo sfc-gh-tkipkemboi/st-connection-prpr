@@ -65,7 +65,7 @@ class FilesConnection(ExperimentalBaseConnection["AbstractFileSystem"]):
         return fs
     
     @property
-    def client(self) -> "AbstractFileSystem":
+    def fs(self) -> "AbstractFileSystem":
         return self._instance
 
     @contextmanager
@@ -77,7 +77,7 @@ class FilesConnection(ExperimentalBaseConnection["AbstractFileSystem"]):
         if "connection_name" in kwargs:
             kwargs.pop("connection_name")
 
-        with self.client.open(path, mode, *args, **kwargs) as f:
+        with self.fs.open(path, mode, *args, **kwargs) as f:
             yield f
 
     @overload
