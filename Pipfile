@@ -14,6 +14,8 @@ s3fs = "*"
 gcsfs = "*"
 snowflake-snowpark-python = {extras = ["pandas"], version = "*"}
 streamlit = {path = "./streamlit-1.21.0-py2.py3-none-any.whl"}
+snowflake-sqlalchemy = "*"
+tenacity = "*"
 
 [dev-packages]
 
