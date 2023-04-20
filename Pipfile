@@ -14,7 +14,6 @@ gcsfs = "*"
 snowflake-sqlalchemy = "*"
 tenacity = "*"
 streamlit = {path = "./streamlit-1.21.0-py2.py3-none-any.whl"}
-mysqlclient = "*"
 pyarrow = "==10.0.1"
 snowflake-snowpark-python = "*"
 
