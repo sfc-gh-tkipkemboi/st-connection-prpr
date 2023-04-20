@@ -6,16 +6,17 @@ name = "pypi"
 [packages]
 toml = "*"
 watchdog = "*"
-pyarrow = {version = "==8.0.0", extras = ["pandas"]}
 sqlalchemy = "==1.4"
 duckdb = "*"
 fsspec = "*"
 s3fs = "*"
 gcsfs = "*"
-snowflake-snowpark-python = {extras = ["pandas"], version = "*"}
-streamlit = {path = "./streamlit-1.21.0-py2.py3-none-any.whl"}
 snowflake-sqlalchemy = "*"
 tenacity = "*"
+streamlit = {path = "./streamlit-1.21.0-py2.py3-none-any.whl"}
+mysqlclient = "*"
+pyarrow = "==10.0.1"
+snowflake-snowpark-python = "*"
 
 [dev-packages]
 
