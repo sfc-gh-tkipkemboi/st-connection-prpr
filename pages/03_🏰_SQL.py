@@ -36,7 +36,7 @@ transactions, using the SQLAlchemy ORM and other more advanced operations.
 """
 
 with st.echo():
-    with conn.session() as s:
+    with conn.session as s:
         st.markdown(f"Note that `s` is a `{type(s)}`")
         s.execute('CREATE TABLE IF NOT EXISTS pet_owners (person TEXT, pet TEXT);')
         s.execute('DELETE FROM pet_owners;')

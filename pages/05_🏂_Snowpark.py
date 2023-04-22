@@ -81,13 +81,25 @@ with st.echo():
         df = conn.query(query)
         st.dataframe(df)
 
-st.subheader("session() for full operations")
-"Use `conn.session()` to get the underlying Snowpark Session for more advanced (and often faster) operations."
+st.subheader("session for full operations")
+"Use `conn.session` to get the underlying Snowpark Session for more advanced (and often faster) operations."
 
 "You may want to wrap this in a function with `@st.cache_data` to be even faster!"
 with st.echo():
     if run_the_code:
-        with conn.session() as session:
+        sess = conn.session
+        local_df = pd.DataFrame({"OWNER": ["jerry", "barbara", "alex"], "PET": ["fish", "cat", "puppy"], "COUNT": [4, 2, 1]})
+        snow_df = sess.create_dataframe(local_df)
+        snow_df = snow_df.filter(col('COUNT') > 1)
+        st.dataframe(snow_df)
+
+st.subheader("safe_session() for thread safety")
+"Since Snowpark Session isn't natively thread safe, use `conn.safe_session()` in a `with` block to get a safe version."
+
+"You may want to wrap this in a function with `@st.cache_data` to be even faster!"
+with st.echo():
+    if run_the_code:
+        with conn.safe_session() as session:
             local_df = pd.DataFrame({"OWNER": ["jerry", "barbara", "alex"], "PET": ["fish", "cat", "puppy"], "COUNT": [4, 2, 1]})
             snow_df = session.create_dataframe(local_df)
             snow_df = snow_df.filter(col('COUNT') > 1)

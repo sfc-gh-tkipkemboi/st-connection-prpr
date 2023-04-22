@@ -97,40 +97,20 @@ with st.expander("To show it's that easy, see the DuckDB code running here :rock
         st.dataframe(df)
 
 """
-## [Draft! Feedback welcome!] Best Practices for Connections
+## Best Practices for Connections
 
 ### Read / Get  methods
 
 We expect the most frequent use case for Connection objects will be straightforward data reads or GET calls to an API. We recommend the following:
 
+- Named with either a single verb (`read()`, `query()`, or similar) or `get_noun()` / `noun()` for a REST-style API.
 - Is wrapped by `st.cache_data` by default
 - Use simple required arguments, an optional `ttl` argument for caching, and any other optional arguments that users may expect or commonly use in a “pareto 80%” use case.
 - Return either:
     - For tabular data: a `pandas.DataFrame` or a `pyarrow.Table`
     - For document / object data: a dict-like object (typical default today - we want to find a pattern to expose the "core" response as well)
-    - More discussion on this below 👇
+    - In the future we may add patterns for more flexible return format, like a `format=` function that accepts some common types
 - Handles errors or stale connections with the reset/retry pattern described below.
-
-**Method naming**
-
-We're debating the best way to name these methods. Currently leaning towards:
-- single verbs for data sources / tabular data (`read()`, `query()`, etc)
-- `get_noun()` for REST-API style connections
-  - Alternate ideas would just be `get()` with the object/endpoint as an argument, or `noun()`
-
-**Method return values**
-
-We think it's useful to have some flexibility in this.
-- For a quick data science prototype, `pandas.DataFrame` can work great.
-- More modern / performance sensitive developers may want `pyarrow.Table`, especially if the underlying data source supports it natively
-- An API can have REST, streaming response, etc; developer may also just want the "core" response (e.g. the text an LLM gives back) without the wrapping object
-- In some cases, you may want a lazy-evaluated result / future object (although we haven't figured out how to auto-cache these effectively yet)
-
-For the initial launch, we will probably pick a type: for tabular data, encourage returning pandas DF or arrow Table.
-
-For (near) future, one idea is to have a `format='pandas'` argument that can have a default set in the connection class, be overridden in class
-construction and/or be set in specific method calls, and have the class know how to convert from the "default" format to any other supported formats.
-This could also possibly take a Callable that handles the conversion and returns the desired custom format. What do you think?
 
 ### Handling stale connections
 

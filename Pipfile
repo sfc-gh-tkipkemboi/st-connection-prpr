@@ -13,9 +13,9 @@ s3fs = "*"
 gcsfs = "*"
 snowflake-sqlalchemy = "*"
 tenacity = "*"
-streamlit = {path = "./streamlit-1.21.0-py2.py3-none-any.whl"}
 pyarrow = "==10.0.1"
 snowflake-snowpark-python = "*"
+streamlit = {path = "./streamlit-1.21.0-py2.py3-none-any.whl"}
 
 [dev-packages]
 
