@@ -28,10 +28,10 @@ with st.echo():
 "secrets.toml looks like this:"
 st.code(connection_secrets, language='toml')
 
-st.subheader("Use session() for writes and transactions")
+st.subheader("Use session for writes and transactions")
 
 """
-`conn.session()` returns an underlying SQLAlchemy Session that can be used for writes,
+`conn.session` returns an underlying SQLAlchemy Session that can be used for writes,
 transactions, using the SQLAlchemy ORM and other more advanced operations.
 """
 
