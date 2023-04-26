@@ -117,7 +117,7 @@ class FilesConnection(ExperimentalBaseConnection["AbstractFileSystem"]):
         ttl: Optional[Union[float, int, timedelta]] = None,
         **kwargs,
     ):
-        @cache_data(ttl=ttl)
+        @cache_data(ttl=ttl, show_spinner="Running `files.read(...)`.")
         def _read_text(path: str | Path, **kwargs) -> str:
             if "connection_name" in kwargs:
                 kwargs.pop("connection_name")
@@ -125,7 +125,7 @@ class FilesConnection(ExperimentalBaseConnection["AbstractFileSystem"]):
             with self.open(path, "rt", **kwargs) as f:
                 return f.read()
 
-        @cache_data(ttl=ttl)
+        @cache_data(ttl=ttl, show_spinner="Running `files.read(...)`.")
         def _read_csv(path: str | Path, **kwargs) -> pd.DataFrame:
             if "connection_name" in kwargs:
                 kwargs.pop("connection_name")
@@ -133,7 +133,7 @@ class FilesConnection(ExperimentalBaseConnection["AbstractFileSystem"]):
             with self.open(path, "rt") as f:
                 return pd.read_csv(f, **kwargs)
 
-        @cache_data(ttl=ttl)
+        @cache_data(ttl=ttl, show_spinner="Running `files.read(...)`.")
         def _read_parquet(path: str | Path, **kwargs) -> pd.DataFrame:
             if "connection_name" in kwargs:
                 kwargs.pop("connection_name")
