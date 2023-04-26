@@ -68,7 +68,6 @@ class FilesConnection(ExperimentalBaseConnection["AbstractFileSystem"]):
     def fs(self) -> "AbstractFileSystem":
         return self._instance
 
-    @contextmanager
     def open(
         self, path: str | Path, mode: str = "rb", *args, **kwargs
     ) -> Iterator[TextIOWrapper | AbstractBufferedFile]:
@@ -77,8 +76,7 @@ class FilesConnection(ExperimentalBaseConnection["AbstractFileSystem"]):
         if "connection_name" in kwargs:
             kwargs.pop("connection_name")
 
-        with self.fs.open(path, mode, *args, **kwargs) as f:
-            yield f
+        return self.fs.open(path, mode, *args, **kwargs)
 
     @overload
     def read(
